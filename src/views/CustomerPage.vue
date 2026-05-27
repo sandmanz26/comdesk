@@ -60,7 +60,7 @@
 
         <span class="text-xs text-gray-500">subject</span>
 
-        <button class="flex items-center gap-1 px-2.5 py-1 text-xs border border-amber-400 text-amber-600 rounded hover:bg-amber-50 transition-colors">
+        <button @click="showCsvModal = true" class="flex items-center gap-1 px-2.5 py-1 text-xs border border-amber-400 text-amber-600 rounded hover:bg-amber-50 transition-colors">
           <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z"/></svg>
           Project Changes (CSV)
         </button>
@@ -193,6 +193,9 @@
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ currentTabLabel }} — coming soon
     </div>
+
+    <!-- Modals -->
+    <ProjectChangesCsvModal v-if="showCsvModal" @close="showCsvModal = false" />
   </div>
 </template>
 
@@ -200,6 +203,7 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { masterDataRows, deletedDataRows } from '@/data/masterData.js'
+import ProjectChangesCsvModal from '@/components/customer/ProjectChangesCsvModal.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'master-data')
@@ -240,6 +244,7 @@ const columns = [
 ]
 
 const showDeleted = ref(false)
+const showCsvModal = ref(false)
 const rows = ref(masterDataRows.map(r => ({ ...r })))
 const searchQuery = ref('')
 const displayCount = ref('100')
