@@ -30,6 +30,18 @@ export const callModes = [
   { id: 'new', label: 'New Call Mode' }
 ]
 
+export const customerMenuItems = [
+  { id: 'master-data', label: 'Master Data Management', path: '/customer/master-data' },
+  { id: 'project', label: 'project management', path: '/customer/projects' },
+  { id: 'mybox', label: 'MyBox management', path: '/customer/mybox' },
+  { id: 'ban-list', label: 'Ban list management', path: '/customer/ban-list' }
+]
+
+export const customerList = [
+  { name: 'Arakawa Company Mobile Phone', count: '', lastCallDate: '', status: '', remarks: '' },
+  { name: "Arakawa's personal cell phone", count: '', lastCallDate: '', status: '', remarks: '' }
+]
+
 export const formFields = [
   [{ label: 'post code', key: 'postCode' }, { label: 'prefectures', key: 'prefectures' }],
   [{ label: 'Address 1', key: 'address1' }, { label: 'Address 2', key: 'address2' }],

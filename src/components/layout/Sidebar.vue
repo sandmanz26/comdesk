@@ -63,12 +63,45 @@
         </Transition>
       </div>
 
-      <!-- Other icons (no flyout) -->
-      <SidebarIcon title="Contacts">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-        </svg>
-      </SidebarIcon>
+      <!-- Customer (WITH flyout submenu) -->
+      <div
+        class="relative w-full flex justify-center"
+        @mouseenter="showCustomerMenu = true"
+        @mouseleave="showCustomerMenu = false"
+      >
+        <RouterLink to="/customer/master-data" custom v-slot="{ navigate, isActive }">
+          <SidebarIcon :active="isActive || showCustomerMenu" title="Customer" @click="navigate">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/>
+            </svg>
+          </SidebarIcon>
+        </RouterLink>
+
+        <!-- Customer flyout panel -->
+        <Transition name="flyout">
+          <div
+            v-if="showCustomerMenu"
+            class="absolute left-full top-0 z-50 w-60 bg-white border border-gray-200 shadow-lg rounded-r-md overflow-hidden"
+            @mouseenter="showCustomerMenu = true"
+            @mouseleave="showCustomerMenu = false"
+          >
+            <div class="px-4 pt-4 pb-2">
+              <p class="text-xl font-normal text-gray-400">Customer</p>
+            </div>
+            <nav>
+              <RouterLink
+                v-for="item in customerMenuItems"
+                :key="item.id"
+                :to="item.path"
+                @click="showCustomerMenu = false"
+                class="block w-full text-left px-4 py-3 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors border-t border-gray-100"
+              >
+                {{ item.label }}
+              </RouterLink>
+            </nav>
+          </div>
+        </Transition>
+      </div>
 
       <SidebarIcon title="Data">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -126,9 +159,11 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import SidebarIcon from './SidebarIcon.vue'
+import { customerMenuItems } from '@/data/callHomeData.js'
 
 const router = useRouter()
 const showCallMenu = ref(false)
+const showCustomerMenu = ref(false)
 
 const callModes = [
   { id: 'normal', label: 'Normal call mode' },

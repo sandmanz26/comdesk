@@ -168,7 +168,21 @@
                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd"/>
               </svg>
             </button>
-            <button class="px-2.5 py-1 text-xs border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50">ALL</button>
+            <!-- ALL toggle pill switch -->
+            <button
+              @click="showAll = !showAll"
+              :class="[
+                'relative inline-flex items-center w-10 h-5 rounded-full transition-colors shrink-0',
+                showAll ? 'bg-gray-800' : 'bg-gray-200'
+              ]"
+              title="Toggle ALL"
+            >
+              <span :class="[
+                'absolute w-4 h-4 rounded-full bg-white shadow transition-transform',
+                showAll ? 'translate-x-5' : 'translate-x-0.5'
+              ]" />
+            </button>
+            <span class="text-xs text-gray-600 -ml-1">ALL</span>
             <button
               @click="showProjectModal = true"
               class="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-300 rounded px-2.5 py-1.5 hover:bg-gray-100 transition-colors ml-auto"
@@ -446,7 +460,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ProjectSelectionModal from '@/components/callhome/ProjectSelectionModal.vue'
-import { callModes, formFields } from '@/data/callHomeData.js'
+import { callModes, formFields, customerList } from '@/data/callHomeData.js'
 
 const route = useRoute()
 
@@ -481,8 +495,9 @@ const searchQuery = ref('')
 const callState = ref('idle')
 const activeHistoryTab = ref('History')
 const historyTabs = ['History', 'Recall', 'Appointment']
-const customers = ref([])
+const customers = ref(customerList)
 const customerTotal = ref(100)
+const showAll = ref(false)
 const historyRows = ref([])
 const callStats = ref({ calls: 0, appointments: 0 })
 
