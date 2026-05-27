@@ -189,6 +189,12 @@
       </div>
     </div>
 
+    <!-- ── Project management ── -->
+    <ProjectManagement v-else-if="section === 'projects'" />
+
+    <!-- ── Mybox management ── -->
+    <MyboxManagement v-else-if="section === 'mybox'" />
+
     <!-- ── Other sections: placeholder ── -->
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ currentTabLabel }} — coming soon
@@ -204,6 +210,8 @@ import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { masterDataRows, deletedDataRows } from '@/data/masterData.js'
 import ProjectChangesCsvModal from '@/components/customer/ProjectChangesCsvModal.vue'
+import ProjectManagement from '@/components/customer/ProjectManagement.vue'
+import MyboxManagement from '@/components/customer/MyboxManagement.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'master-data')
