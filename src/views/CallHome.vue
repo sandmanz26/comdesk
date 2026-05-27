@@ -443,28 +443,39 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ProjectSelectionModal from '@/components/callhome/ProjectSelectionModal.vue'
 import { callModes, formFields } from '@/data/callHomeData.js'
 
 const route = useRoute()
 
-// Read ?mode= query param from URL (set by sidebar flyout)
 const validModes = ['normal', 'auto', 'new']
 const selectedMode = ref(
   validModes.includes(route.query.mode) ? route.query.mode : 'normal'
 )
 
-// Watch for route query changes (e.g. navigating between modes via flyout)
+const showProjectModal = ref(false)
+const selectedProject = ref(null)
+
+// Auto-open Project Selection modal when mode is 'auto'
+function openModalIfAuto(mode) {
+  if (mode === 'auto') {
+    showProjectModal.value = true
+  }
+}
+
+// Watch URL query param changes (from sidebar flyout navigation)
 watch(() => route.query.mode, (newMode) => {
   if (validModes.includes(newMode)) {
     selectedMode.value = newMode
+    openModalIfAuto(newMode)
   }
 })
 
-const showProjectModal = ref(false)
-const selectedProject = ref(null)
+// Also trigger on initial load
+onMounted(() => openModalIfAuto(selectedMode.value))
+
 const phoneNumber = ref('')
 const searchQuery = ref('')
 const callState = ref('idle')
@@ -494,6 +505,7 @@ const todayLabel = computed(() => {
 
 function selectMode(id) {
   selectedMode.value = id
+  openModalIfAuto(id)
 }
 
 function onProjectSelect(project) {

@@ -7,8 +7,8 @@ export const workgroups = [
       { id: 1, name: 'Development Test Project', called: 0, total: 0, percent: 0 },
       { id: 2, name: 'Test Kawashima (list import)', called: 0, total: 0, percent: 0 },
       { id: 3, name: 'playwright_prj', called: 1, total: 1, percent: 100 },
-      { id: 4, name: '20251017', called: 9, total: 50, percent: 18 },
-      { id: 5, name: '20251017_Division A', called: 3, total: 44, percent: 6 },
+      { id: 4, name: '20251017', called: 0, total: 0, percent: 0 },
+      { id: 5, name: '20251017_Division A', called: 12, total: 88, percent: 13 },
       { id: 6, name: '20251017_Division B', called: 2, total: 53, percent: 3 },
       { id: 7, name: 'Test Arakawa', called: 'twenty two', total: null, percent: 100 },
       { id: 8, name: 'Alvin Test', called: 'twenty three', total: null, percent: 66 }
