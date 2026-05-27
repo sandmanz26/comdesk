@@ -50,7 +50,7 @@
       <div class="flex items-center gap-2 px-4 py-1.5 border-b border-gray-200 bg-gray-50 shrink-0 flex-wrap">
         <!-- Left buttons -->
         <button class="px-3 py-1 text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">add</button>
-        <button class="px-3 py-1 text-xs border border-gray-300 rounded text-gray-600 hover:bg-gray-100 transition-colors">Deleted</button>
+        <button @click="toggleDeleted" :class="['px-3 py-1 text-xs rounded transition-colors', showDeleted ? 'bg-blue-500 text-white border border-blue-500' : 'border border-gray-300 text-gray-600 hover:bg-gray-100']">Deleted</button>
 
         <select v-model="displayCount" class="text-xs border border-gray-300 rounded px-2 py-1 bg-white text-gray-600 outline-none cursor-pointer">
           <option value="100">display100</option>
@@ -67,7 +67,8 @@
         <button class="flex items-center gap-1 px-2.5 py-1 text-xs border border-amber-400 text-amber-600 bg-amber-50 rounded hover:bg-amber-100 transition-colors">
           Project Change
         </button>
-        <button class="px-3 py-1 text-xs text-white bg-red-400 hover:bg-red-500 rounded transition-colors">delete</button>
+        <button v-if="!showDeleted" class="px-3 py-1 text-xs text-white bg-red-400 hover:bg-red-500 rounded transition-colors">delete</button>
+        <button v-else class="px-3 py-1 text-xs text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">Restoration</button>
 
         <!-- Spacer -->
         <div class="flex-1" />
@@ -196,9 +197,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { masterDataRows } from '@/data/masterData.js'
+import { masterDataRows, deletedDataRows } from '@/data/masterData.js'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'master-data')
@@ -238,12 +239,24 @@ const columns = [
   { key: 'url',                 label: 'URL' }
 ]
 
+const showDeleted = ref(false)
 const rows = ref(masterDataRows.map(r => ({ ...r })))
 const searchQuery = ref('')
 const displayCount = ref('100')
 const currentPage = ref(1)
 const sortKey = ref('')
 const sortDir = ref('asc')
+
+function toggleDeleted() {
+  showDeleted.value = !showDeleted.value
+}
+
+watch(showDeleted, (val) => {
+  rows.value = val
+    ? deletedDataRows.map(r => ({ ...r }))
+    : masterDataRows.map(r => ({ ...r }))
+  currentPage.value = 1
+})
 
 function isTabActive(tab) {
   return section.value === tab.id
