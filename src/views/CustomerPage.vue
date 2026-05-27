@@ -23,13 +23,13 @@
 
       <!-- Action bar -->
       <div class="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-gray-50 shrink-0">
-        <button class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">
+        <button @click="showWorkgroupModal = true" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
           </svg>
           Workgroup Selection
         </button>
-        <button class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">
+        <button @click="showProjectModal = true" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 rounded transition-colors">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/>
           </svg>
@@ -202,6 +202,18 @@
 
     <!-- Modals -->
     <ProjectChangesCsvModal v-if="showCsvModal" @close="showCsvModal = false" />
+    <SelectionListModal
+      v-if="showWorkgroupModal"
+      title="Workgroup Selection"
+      :items="projectWorkgroups.map(w => w.name)"
+      @close="showWorkgroupModal = false"
+    />
+    <SelectionListModal
+      v-if="showProjectModal"
+      title="Project Selection"
+      :items="allProjects"
+      @close="showProjectModal = false"
+    />
   </div>
 </template>
 
@@ -209,9 +221,11 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { masterDataRows, deletedDataRows } from '@/data/masterData.js'
+import { projectWorkgroups, allProjects } from '@/data/projectData.js'
 import ProjectChangesCsvModal from '@/components/customer/ProjectChangesCsvModal.vue'
 import ProjectManagement from '@/components/customer/ProjectManagement.vue'
 import MyboxManagement from '@/components/customer/MyboxManagement.vue'
+import SelectionListModal from '@/components/ui/SelectionListModal.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'master-data')
@@ -253,6 +267,8 @@ const columns = [
 
 const showDeleted = ref(false)
 const showCsvModal = ref(false)
+const showWorkgroupModal = ref(false)
+const showProjectModal = ref(false)
 const rows = ref(masterDataRows.map(r => ({ ...r })))
 const searchQuery = ref('')
 const displayCount = ref('100')

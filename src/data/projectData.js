@@ -7,7 +7,24 @@ export const projectWorkgroups = [
   { id: 6, name: 'workgroup alvintest' },
   { id: 7, name: 'WG-A' },
   { id: 8, name: 'WG-B' },
-  { id: 9, name: '12345678901234567890' },
+  { id: 9, name: '12345678901234567890123456789012345678901234567890123456789012345678901234567890' },
+]
+
+export const allProjects = [
+  'Development Test Project',
+  'Scenario 2: Exporting prohibited numbers',
+  'Common Scenario: List of Incoming Calls',
+  'Scenario 2 for automatic distribution',
+  'Scenario 5: Transfer destination for master data',
+  'Scenario 5: Source of Master Data Transfer',
+  'Scenario 5: New Project Registration',
+  'Scenario 5: Project Registration',
+  'No duplicate check',
+  'Scenario 5: Editing - No checks',
+  'Scenario 5: New Project Registration_2',
+  'Scenario 5: New Project Registration_3',
+  'Scenario 5: New Project Registration_4',
+  'Duplicate Check Scope Test',
 ]
 
 export const projectsByWorkgroup = {
