@@ -443,11 +443,26 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import ProjectSelectionModal from '@/components/callhome/ProjectSelectionModal.vue'
 import { callModes, formFields } from '@/data/callHomeData.js'
 
-const selectedMode = ref('normal')
+const route = useRoute()
+
+// Read ?mode= query param from URL (set by sidebar flyout)
+const validModes = ['normal', 'auto', 'new']
+const selectedMode = ref(
+  validModes.includes(route.query.mode) ? route.query.mode : 'normal'
+)
+
+// Watch for route query changes (e.g. navigating between modes via flyout)
+watch(() => route.query.mode, (newMode) => {
+  if (validModes.includes(newMode)) {
+    selectedMode.value = newMode
+  }
+})
+
 const showProjectModal = ref(false)
 const selectedProject = ref(null)
 const phoneNumber = ref('')
@@ -457,9 +472,7 @@ const activeHistoryTab = ref('History')
 const historyTabs = ['History', 'Recall', 'Appointment']
 const customers = ref([])
 const customerTotal = ref(100)
-
 const historyRows = ref([])
-
 const callStats = ref({ calls: 0, appointments: 0 })
 
 const formData = ref({
@@ -470,10 +483,12 @@ const formData = ref({
 
 const todayLabel = computed(() => {
   const d = new Date()
+  const day = d.getDate()
+  const suffix = day === 1 ? 'st' : day === 2 ? 'nd' : day === 3 ? 'rd' : 'th'
   return {
     weekday: d.toLocaleDateString('en-US', { weekday: 'long' }),
     month: d.toLocaleDateString('en-US', { month: 'long' }),
-    day: d.toLocaleDateString('en-US', { day: 'numeric' }) + 'th'
+    day: day + suffix
   }
 })
 

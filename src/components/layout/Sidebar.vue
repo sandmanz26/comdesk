@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-14 bg-white border-r border-gray-200 flex flex-col items-center py-3 gap-1 shadow-sm z-10 shrink-0">
+  <aside class="w-14 bg-white border-r border-gray-200 flex flex-col items-center py-3 gap-1 z-30 shrink-0 relative">
     <!-- Logo -->
     <div class="mb-3 flex items-center justify-center">
       <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center">
@@ -11,6 +11,8 @@
 
     <!-- Nav Items -->
     <nav class="flex flex-col items-center gap-1 w-full px-2">
+
+      <!-- Dashboard (no flyout) -->
       <RouterLink to="/dashboard" custom v-slot="{ navigate, isActive }">
         <SidebarIcon :active="isActive" title="Dashboard" @click="navigate">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -19,14 +21,49 @@
         </SidebarIcon>
       </RouterLink>
 
-      <RouterLink to="/call-home" custom v-slot="{ navigate, isActive }">
-        <SidebarIcon :active="isActive" title="Call Home" @click="navigate">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
-          </svg>
-        </SidebarIcon>
-      </RouterLink>
+      <!-- Call Home (WITH flyout submenu) -->
+      <div
+        class="relative w-full flex justify-center"
+        @mouseenter="showCallMenu = true"
+        @mouseleave="showCallMenu = false"
+      >
+        <RouterLink to="/call-home" custom v-slot="{ navigate, isActive }">
+          <SidebarIcon :active="isActive || showCallMenu" title="Call Home" @click="navigate">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+            </svg>
+          </SidebarIcon>
+        </RouterLink>
 
+        <!-- Flyout submenu panel -->
+        <Transition name="flyout">
+          <div
+            v-if="showCallMenu"
+            class="absolute left-full top-0 z-50 w-60 bg-white border border-gray-200 shadow-lg rounded-r-md overflow-hidden"
+            @mouseenter="showCallMenu = true"
+            @mouseleave="showCallMenu = false"
+          >
+            <!-- Title -->
+            <div class="px-4 pt-4 pb-2">
+              <p class="text-xl font-normal text-gray-400">Call Home</p>
+            </div>
+
+            <!-- Mode items -->
+            <nav>
+              <button
+                v-for="mode in callModes"
+                :key="mode.id"
+                @click="goToMode(mode.id)"
+                class="w-full text-left px-4 py-3 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors border-t border-gray-100 first:border-t-0"
+              >
+                {{ mode.label }}
+              </button>
+            </nav>
+          </div>
+        </Transition>
+      </div>
+
+      <!-- Other icons (no flyout) -->
       <SidebarIcon title="Contacts">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
@@ -86,5 +123,34 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SidebarIcon from './SidebarIcon.vue'
+
+const router = useRouter()
+const showCallMenu = ref(false)
+
+const callModes = [
+  { id: 'normal', label: 'Normal call mode' },
+  { id: 'auto',   label: 'Automatic distribution call mode' },
+  { id: 'new',    label: 'New Call Mode' }
+]
+
+function goToMode(modeId) {
+  showCallMenu.value = false
+  router.push({ path: '/call-home', query: { mode: modeId } })
+}
 </script>
+
+<style scoped>
+/* Flyout slide-in animation */
+.flyout-enter-active,
+.flyout-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.flyout-enter-from,
+.flyout-leave-to {
+  opacity: 0;
+  transform: translateX(-6px);
+}
+</style>
