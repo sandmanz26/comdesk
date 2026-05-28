@@ -177,6 +177,12 @@
       />
     </template>
 
+    <!-- ── Recall List ── -->
+    <RecallList v-else-if="section === 'recall-list'" />
+
+    <!-- ── Information Sharing Board ── -->
+    <InformationSharing v-else-if="section === 'information-sharing'" />
+
     <!-- ── Other sections placeholder ── -->
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ sectionLabel }} — coming soon
@@ -193,6 +199,8 @@ import AppointmentSearchModal from '@/components/teams/AppointmentSearchModal.vu
 import CallTypeIcon from '@/components/teams/CallTypeIcon.vue'
 import CallDetailPanel from '@/components/teams/CallDetailPanel.vue'
 import ActivityEditModal from '@/components/teams/ActivityEditModal.vue'
+import RecallList from '@/components/teams/RecallList.vue'
+import InformationSharing from '@/components/teams/InformationSharing.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'appointment')
