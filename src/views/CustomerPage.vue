@@ -195,6 +195,9 @@
     <!-- ── Mybox management ── -->
     <MyboxManagement v-else-if="section === 'mybox'" />
 
+    <!-- ── Ban list management ── -->
+    <BanListManagement v-else-if="section === 'ban-list'" />
+
     <!-- ── Other sections: placeholder ── -->
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ currentTabLabel }} — coming soon
@@ -225,6 +228,7 @@ import { projectWorkgroups, allProjects } from '@/data/projectData.js'
 import ProjectChangesCsvModal from '@/components/customer/ProjectChangesCsvModal.vue'
 import ProjectManagement from '@/components/customer/ProjectManagement.vue'
 import MyboxManagement from '@/components/customer/MyboxManagement.vue'
+import BanListManagement from '@/components/customer/BanListManagement.vue'
 import SelectionListModal from '@/components/ui/SelectionListModal.vue'
 
 const route = useRoute()
