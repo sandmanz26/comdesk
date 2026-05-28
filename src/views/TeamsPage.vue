@@ -61,73 +61,120 @@
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
         </button>
         <input type="text" v-model="activitySearch" placeholder="search" class="flex-1 max-w-xs border border-gray-300 rounded px-3 py-1.5 text-xs outline-none focus:border-blue-400 text-gray-700 placeholder-gray-400" />
-        <button class="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-amber-400 hover:bg-amber-500 rounded transition-colors">
+        <button @click="openEditModal" class="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-amber-400 hover:bg-amber-500 rounded transition-colors">
           <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z"/></svg>
           edit
         </button>
       </div>
 
-      <!-- Column headers -->
-      <div class="flex-1 overflow-auto">
-        <table class="text-xs whitespace-nowrap border-collapse min-w-full">
-          <thead class="sticky top-0 z-10 bg-white">
-            <tr class="border-b-2 border-gray-200">
-              <th class="px-2 py-2.5 w-8 bg-white border-r border-gray-100"></th>
-              <th class="px-2 py-2.5 w-8 bg-white border-r border-gray-100"></th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[150px]">Call date and time</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">Call duration</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[100px]">name</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[130px]">Destination number</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[110px]">Caller ID</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[140px]">project</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">Respo...</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">status</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">user</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[100px]">Recall scheduled</th>
-              <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white min-w-[160px]">Call memo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="row in filteredActivity"
-              :key="row.id"
-              :class="['border-b border-gray-100 hover:bg-blue-50 transition-colors', row.selected ? 'bg-blue-50' : '']"
-            >
-              <!-- Radio -->
-              <td class="px-2 py-2 border-r border-gray-100">
-                <input type="radio" name="activity-select" :checked="row.selected" class="accent-blue-600" @change="selectRow(row.id)" />
-              </td>
-              <!-- Call type icon -->
-              <td class="px-2 py-2 border-r border-gray-100">
-                <CallTypeIcon :type="row.type" />
-              </td>
-              <!-- Date/time -->
-              <td class="px-3 py-2 border-r border-gray-100 text-blue-600 font-medium">{{ row.dateTime }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.duration }}</td>
-              <!-- Name -->
-              <td class="px-3 py-2 border-r border-gray-100">
-                <button v-if="row.name" class="text-blue-500 hover:underline max-w-[100px] truncate text-left block">{{ row.name }}</button>
-              </td>
-              <!-- Destination number -->
-              <td class="px-3 py-2 border-r border-gray-100">
-                <div class="flex items-center gap-1">
-                  <span class="text-gray-700">{{ row.destinationNumber }}</span>
-                  <button class="text-gray-400 hover:text-gray-600" title="Copy">
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z"/><path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z"/></svg>
-                  </button>
-                </div>
-              </td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.callerId }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[140px] truncate">{{ row.project }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.respondent }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.status }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.user }}</td>
-              <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.recallScheduled }}</td>
-              <td class="px-3 py-2 text-gray-600 max-w-[160px] truncate">{{ row.memo }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Content area: list + optional detail panel -->
+      <div class="flex flex-1 overflow-hidden">
+
+        <!-- Left: table + pagination -->
+        <div :class="['flex flex-col overflow-hidden transition-all duration-200', showDetailPanel ? 'w-[480px] shrink-0' : 'flex-1']">
+          <div class="flex-1 overflow-auto">
+            <table class="text-xs whitespace-nowrap border-collapse min-w-full">
+              <thead class="sticky top-0 z-10 bg-white">
+                <tr class="border-b-2 border-gray-200">
+                  <th class="px-2 py-2.5 w-8 bg-white border-r border-gray-100"></th>
+                  <th class="px-2 py-2.5 w-8 bg-white border-r border-gray-100"></th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[150px]">Call date and time</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">Call duration</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[100px]">name</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[130px]">Destination number</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[110px]">Caller ID</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[140px]">project</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">Respo...</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">status</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[80px]">user</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white border-r border-gray-100 min-w-[100px]">Recall scheduled</th>
+                  <th class="px-3 py-2.5 text-left font-semibold text-gray-600 bg-white min-w-[160px]">Call memo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="row in pagedActivity"
+                  :key="row.id"
+                  @click="openDetail(row)"
+                  :class="['border-b border-gray-100 hover:bg-blue-50 transition-colors cursor-pointer', row.selected ? 'bg-blue-50' : '']"
+                >
+                  <td class="px-2 py-2 border-r border-gray-100" @click.stop>
+                    <input type="radio" name="activity-select" :checked="row.selected" class="accent-blue-600" @change="selectRow(row.id)" />
+                  </td>
+                  <td class="px-2 py-2 border-r border-gray-100">
+                    <CallTypeIcon :type="row.type" />
+                  </td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-blue-600 font-medium">{{ row.dateTime }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.duration }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100">
+                    <button v-if="row.name" class="text-blue-500 hover:underline max-w-[100px] truncate text-left block" @click.stop>{{ row.name }}</button>
+                  </td>
+                  <td class="px-3 py-2 border-r border-gray-100">
+                    <div class="flex items-center gap-1">
+                      <span class="text-gray-700">{{ row.destinationNumber }}</span>
+                      <button class="text-gray-400 hover:text-gray-600" title="Copy" @click.stop>
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z"/><path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.callerId }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[140px] truncate">{{ row.project }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.respondent }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.status }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600 max-w-[80px] truncate">{{ row.user }}</td>
+                  <td class="px-3 py-2 border-r border-gray-100 text-gray-600">{{ row.recallScheduled }}</td>
+                  <td class="px-3 py-2 text-gray-600 max-w-[160px] truncate">{{ row.memo }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="shrink-0 flex items-center gap-2 px-3 py-2 border-t border-gray-200 bg-white text-xs text-gray-600">
+            <span>{{ totalActivityItems }} items</span>
+            <div class="flex items-center gap-0.5 ml-2">
+              <button @click="activityPage = 1" :disabled="activityPage === 1" class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-30">«</button>
+              <button @click="activityPage = Math.max(1, activityPage - 1)" :disabled="activityPage === 1" class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-30">‹</button>
+              <button
+                v-for="p in visiblePages"
+                :key="p"
+                @click="activityPage = p"
+                :class="['w-6 h-6 flex items-center justify-center rounded transition-colors', activityPage === p ? 'bg-blue-500 text-white' : 'hover:bg-gray-100']"
+              >{{ p }}</button>
+              <button @click="activityPage = Math.min(totalPages, activityPage + 1)" :disabled="activityPage === totalPages" class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-30">›</button>
+              <button @click="activityPage = totalPages" :disabled="activityPage === totalPages" class="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-30">»</button>
+            </div>
+            <div class="flex-1" />
+            <div class="relative">
+              <select v-model="activityPerPage" class="border border-gray-300 rounded px-2 py-1 outline-none text-xs appearance-none pr-6">
+                <option :value="10">10</option>
+                <option :value="20">20</option>
+                <option :value="50">50</option>
+                <option :value="100">100</option>
+              </select>
+              <svg class="w-3 h-3 text-gray-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: detail panel -->
+        <Transition name="slide-panel">
+          <CallDetailPanel
+            v-if="showDetailPanel && detailRow"
+            :row="detailRow"
+            @close="showDetailPanel = false"
+            class="flex-1"
+          />
+        </Transition>
       </div>
+
+      <!-- Edit modal -->
+      <ActivityEditModal
+        v-if="showEditModal && editRow"
+        :row="editRow"
+        @close="showEditModal = false"
+        @save="saveEdit"
+      />
     </template>
 
     <!-- ── Other sections placeholder ── -->
@@ -144,6 +191,8 @@ import { appointmentRows } from '@/data/appointmentData.js'
 import { activityRows as rawActivityRows } from '@/data/activityData.js'
 import AppointmentSearchModal from '@/components/teams/AppointmentSearchModal.vue'
 import CallTypeIcon from '@/components/teams/CallTypeIcon.vue'
+import CallDetailPanel from '@/components/teams/CallDetailPanel.vue'
+import ActivityEditModal from '@/components/teams/ActivityEditModal.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'appointment')
@@ -164,6 +213,9 @@ const apptPagedRows = computed(() => appointmentRows.slice(0, parseInt(apptDispl
 // Activity History
 const activitySearch = ref('')
 const activityData = ref(rawActivityRows.map(r => ({ ...r })))
+const activityPage = ref(1)
+const activityPerPage = ref(100)
+const totalActivityItems = 7979
 
 const filteredActivity = computed(() => {
   if (!activitySearch.value) return activityData.value
@@ -175,7 +227,52 @@ const filteredActivity = computed(() => {
   )
 })
 
+const totalPages = computed(() => Math.max(1, Math.ceil(totalActivityItems / activityPerPage.value)))
+
+const visiblePages = computed(() => {
+  const total = totalPages.value
+  const cur = activityPage.value
+  const pages = []
+  const start = Math.max(1, Math.min(cur - 2, total - 4))
+  for (let i = start; i <= Math.min(start + 4, total); i++) pages.push(i)
+  return pages
+})
+
+const pagedActivity = computed(() => filteredActivity.value)
+
+// Detail panel
+const showDetailPanel = ref(false)
+const detailRow = ref(null)
+
+function openDetail(row) {
+  detailRow.value = row
+  showDetailPanel.value = true
+}
+
+// Edit modal
+const showEditModal = ref(false)
+const editRow = ref(null)
+
+function openEditModal() {
+  const selected = activityData.value.find(r => r.selected)
+  if (selected) {
+    editRow.value = selected
+    showEditModal.value = true
+  }
+}
+
+function saveEdit(updates) {
+  if (!editRow.value) return
+  const row = activityData.value.find(r => r.id === editRow.value.id)
+  if (row) Object.assign(row, updates)
+}
+
 function selectRow(id) {
   activityData.value.forEach(r => r.selected = r.id === id)
 }
 </script>
+
+<style scoped>
+.slide-panel-enter-active, .slide-panel-leave-active { transition: transform 0.2s ease, opacity 0.2s ease; }
+.slide-panel-enter-from, .slide-panel-leave-to { transform: translateX(20px); opacity: 0; }
+</style>
