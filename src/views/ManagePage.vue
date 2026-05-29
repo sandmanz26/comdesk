@@ -6,6 +6,9 @@
     <ActivityResultSettings  v-else-if="section === 'activity-result-settings'" />
     <ListItemSettings        v-else-if="section === 'list-item-settings'" />
     <OmnichannelSettings     v-else-if="section === 'omnichannel-settings'" />
+    <IntegrationManagement   v-else-if="section === 'integration-management'" />
+    <PipelineManagement      v-else-if="section === 'pipeline-management'" />
+    <KeywordSettings         v-else-if="section === 'keyword-settings'" />
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ sectionLabel }} — coming soon
     </div>
@@ -20,7 +23,10 @@ import WorkgroupManagement from '@/components/manage/WorkgroupManagement.vue'
 import AccessManagement    from '@/components/manage/AccessManagement.vue'
 import ActivityResultSettings from '@/components/manage/ActivityResultSettings.vue'
 import ListItemSettings    from '@/components/manage/ListItemSettings.vue'
-import OmnichannelSettings from '@/components/manage/OmnichannelSettings.vue'
+import OmnichannelSettings    from '@/components/manage/OmnichannelSettings.vue'
+import IntegrationManagement  from '@/components/manage/IntegrationManagement.vue'
+import PipelineManagement     from '@/components/manage/PipelineManagement.vue'
+import KeywordSettings        from '@/components/manage/KeywordSettings.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'user-management')
