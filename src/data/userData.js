@@ -1,0 +1,17 @@
+export const users = [
+  { id: 1,  name: 'Hidehisa Iida',        email: 'hidehisa.iida@widsley-dev.com',        office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 2,  name: 'Tetsuya Kudo',         email: 'tetsuya.kudo@widsley-de.com',          office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 3,  name: 'Takayoshi Kawashima',  email: 'takayoshi.kawashima@widsley-dev.com',  office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 4,  name: 'Fukuyasu Sekine',      email: 'fukuyasu.sekine@widsley-dev.com',      office: 'Office 20251023',        unit: 'Unit 20251023',      userType: 'System Administrator' },
+  { id: 5,  name: 'Takashi Kawakami',     email: 'ryuji.kawakami01@widsley.com',         office: 'AWS Migration Test Office', unit: 'AWS migration test', userType: 'System Administrator' },
+  { id: 6,  name: 'Sasaki-san',           email: 'kazuhiro.sasaki@widsley.com',          office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 7,  name: 'Tei-san',              email: 'kyouro.tei@widsley.com',               office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 8,  name: 'Ishikawa-san',         email: 'hinako.ishikawa@widsley.com',          office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 9,  name: 'Misaki Sekine',        email: 'misa.sekine01@widsley.com',            office: 'Office 20251023',        unit: 'Unit 20251023',      userType: 'System Administrator' },
+  { id: 10, name: 'Nozomi Arakawa',       email: 'nozomi.arakawa@widsley.com',           office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 11, name: 'Hanae Nishi',          email: 'hanae.nishi@widsley.com',              office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 12, name: 'Alvin Mariogani',      email: 'alvin.mariogani@widsley-dev.com',      office: 'Not selected',           unit: 'Not selected',       userType: 'System Administrator' },
+  { id: 13, name: 'Nishi Test User',      email: 'nishi.test@widsley.com',               office: 'Not selected',           unit: 'Not selected',       userType: 'Standard User' },
+  { id: 14, name: 'Test Account A',       email: 'test-a@widsley.com',                   office: 'Not selected',           unit: 'Not selected',       userType: 'Standard User' },
+  { id: 15, name: 'Test Account B',       email: 'test-b@widsley.com',                   office: 'Not selected',           unit: 'Not selected',       userType: 'Standard User' },
+]
