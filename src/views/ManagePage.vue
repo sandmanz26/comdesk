@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-col flex-1 overflow-hidden bg-white">
-    <UserManagement      v-if="section === 'user-management'" />
-    <WorkgroupManagement v-else-if="section === 'workgroup-management'" />
-    <AccessManagement    v-else-if="section === 'access-management'" />
+    <UserManagement          v-if="section === 'user-management'" />
+    <WorkgroupManagement     v-else-if="section === 'workgroup-management'" />
+    <AccessManagement        v-else-if="section === 'access-management'" />
+    <ActivityResultSettings  v-else-if="section === 'activity-result-settings'" />
+    <ListItemSettings        v-else-if="section === 'list-item-settings'" />
+    <OmnichannelSettings     v-else-if="section === 'omnichannel-settings'" />
     <div v-else class="flex-1 flex items-center justify-center text-gray-400 text-sm">
       {{ sectionLabel }} — coming soon
     </div>
@@ -15,6 +18,9 @@ import { useRoute } from 'vue-router'
 import UserManagement      from '@/components/manage/UserManagement.vue'
 import WorkgroupManagement from '@/components/manage/WorkgroupManagement.vue'
 import AccessManagement    from '@/components/manage/AccessManagement.vue'
+import ActivityResultSettings from '@/components/manage/ActivityResultSettings.vue'
+import ListItemSettings    from '@/components/manage/ListItemSettings.vue'
+import OmnichannelSettings from '@/components/manage/OmnichannelSettings.vue'
 
 const route = useRoute()
 const section = computed(() => route.params.section || 'user-management')
